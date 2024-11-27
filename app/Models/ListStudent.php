@@ -12,5 +12,6 @@ class ListStudent extends Model
         "jurusan",
         "birth_date",
         "photo_profile",
+        "photo_profile_name",
     ];
 }

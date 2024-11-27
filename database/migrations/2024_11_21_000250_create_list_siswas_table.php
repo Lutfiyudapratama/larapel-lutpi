@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('jurusan',[ "PPLG", "TJKT", "TBSM", "TKRO", "MPLB", "DKV", "PERHOTELAN", "TMP"]);
             $table->date("birth_date");
             $table->string("photo_profile");
+            $table->string("photo_profile_name");
             $table->timestamps();
         });
     }

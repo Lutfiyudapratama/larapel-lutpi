@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ListStudent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class StudentController extends Controller
 {
@@ -33,7 +34,7 @@ class StudentController extends Controller
 
         $time = Carbon::now()->format('Y-m-d H-i-s.');
         $doc = $time . '.' . $request->photo_profile->extension();
-        $request->file('photo_profile')->move(public_path('upload/profile'),$doc);
+        $request->file('photo_profile')->move(public_path('upload/profile'), $doc);
 
         $student = new ListStudent();
         $student->name = $request->name;
@@ -41,9 +42,9 @@ class StudentController extends Controller
         $student->jurusan = $request->jurusan;
         $student->birth_date = $request->birth_date;
         $student->photo_profile = url('/upload/profile') . '/' . $doc;
+        $student->photo_profile = $doc;
         $student->save();
         return redirect('/list-siswa')->with('success', 'Data Berhasil Ditambahkan');
-        
     }
 
     /**
@@ -67,6 +68,13 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $student = new ListStudent();
+        $data = $student->find($id);
+        $path = public_path($data->photo_profile_name);
+        File::deleteDirectory($path);
+        $data->delete();
+        return redirect('/list-siswa')->with('success', 'Data Berhasil Dihapus');
+        // public_path('upload/profile');
+        // $data->delete();
     }
 }
